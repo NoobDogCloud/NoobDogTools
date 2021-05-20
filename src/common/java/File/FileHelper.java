@@ -1,6 +1,7 @@
 package common.java.File;
 
 import common.java.String.StringHelper;
+import common.java.Time.TimeHelper;
 import common.java.nLogger.nLogger;
 import sun.misc.Unsafe;
 
@@ -75,6 +76,14 @@ public class FileHelper<T extends FileHelper> {
         } catch (IOException e) {
             throw new RuntimeException(path, e);
         }
+    }
+
+    public static String getUUIDFileName(String fileName) {
+        // 将文件名的前面部分进行截取：xx.jpg   --->   .jpg
+        int idx = fileName.lastIndexOf(".");
+        String extention = fileName.substring(idx);
+        String uuidFileName = TimeHelper.build().timestampToDatetime(TimeHelper.getNowTimestampByZero(), "yyyyMMddHHmmss") + "_" + UUID.randomUUID().toString().replace("-", "") + extention;
+        return uuidFileName;
     }
 
     /**
