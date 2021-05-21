@@ -515,6 +515,10 @@ public class StringHelper {
         return str;
     }
 
+    public boolean notBlank(String str) {
+        return str.indexOf(' ') == -1;
+    }
+
     /**
      * 首字母大写
      *
