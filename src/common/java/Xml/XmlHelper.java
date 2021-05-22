@@ -9,11 +9,10 @@ import org.json.gsc.JSONArray;
 import org.json.gsc.JSONObject;
 
 import java.util.Iterator;
-import java.util.Properties;
 
 public class XmlHelper {
-	public static JSONObject xml2json(String xmlstr) {
-		return xml2jsonex(xmlstr, new JSONObject());
+	public static JSONObject toJson(String xmlstr) {
+		return toJson(xmlstr, new JSONObject());
 	}
 
 	/**
@@ -22,14 +21,14 @@ public class XmlHelper {
 	 * @param xmldoc
 	 * @return
 	 */
-	public static JSONObject xml2json(Document xmldoc) {
-		return xml2jsonex(xmldoc, new JSONObject());
+	public static JSONObject toJson(Document xmldoc) {
+		return toJson(xmldoc, new JSONObject());
 	}
 
-	public static JSONObject xml2jsonex(String xmldoc, JSONObject rs) {
+	public static JSONObject toJson(String xmldoc, JSONObject rs) {
 		JSONObject json;
 		try {
-			json = xml2jsonex(DocumentHelper.parseText(xmldoc), rs);
+			json = toJson(DocumentHelper.parseText(xmldoc), rs);
 		} catch (DocumentException e) {
 			json = null;
 		}
@@ -43,19 +42,19 @@ public class XmlHelper {
 	 * @param rs
 	 * @return
 	 */
-	public static JSONObject xml2jsonex(Document xmldoc, JSONObject rs) {
+	public static JSONObject toJson(Document xmldoc, JSONObject rs) {
 		JSONObject robj;
 		Element root = xmldoc.getRootElement();
-		robj = chilrenxml2json(root);
+		robj = childrenToJson(root);
 		rs.putAll(robj);
 		return rs;
 	}
 
-	public static Document json2xml(String jsonStr) {
-		return json2xml(JSONObject.toJSON(jsonStr));
+	public static Document toXml(String jsonStr) {
+		return toXml(JSONObject.toJSON(jsonStr));
 	}
 
-	public static Document json2xml(JSONObject json) {
+	public static Document toXml(JSONObject json) {
 		Element element;
 		Document document = DocumentHelper.createDocument();
 		if (json != null) {
@@ -68,7 +67,7 @@ public class XmlHelper {
 		return document;
 	}
 
-	public static Element appendjson2xml(Element fatherNode, JSONObject json) {
+	public static Element appendJsonToXml(Element fatherNode, JSONObject json) {
 		String key;
 		Object _item;
 		Element contentNode;
@@ -77,11 +76,11 @@ public class XmlHelper {
 			contentNode = DocumentHelper.createElement(key);//创建
 			_item = json.get(key);
 			if (_item instanceof JSONObject) {//内容是JSON
-				contentNode = appendjson2xml(contentNode, (JSONObject) _item);
+				contentNode = appendJsonToXml(contentNode, (JSONObject) _item);
 			} else if (_item instanceof JSONArray) {
 				JSONArray ary = (JSONArray) _item;
 				for (Object _json : ary) {
-					contentNode = appendjson2xml(contentNode, (JSONObject) _json);
+					contentNode = appendJsonToXml(contentNode, (JSONObject) _json);
 				}
 			} else {
 				contentNode.add(DocumentHelper.createCDATA(json.get(key).toString()));
@@ -92,7 +91,7 @@ public class XmlHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static JSONObject chilrenxml2json(Element fatherNode) {
+	public static JSONObject childrenToJson(Element fatherNode) {
 		String key;
 		Element element;
 		Object tmp;
@@ -101,7 +100,7 @@ public class XmlHelper {
 		JSONObject tmpRS;
 		for (Iterator<Element> i = fatherNode.elementIterator(); i.hasNext(); ) {
 			element = i.next();
-			tmpRS = chilrenxml2json(element);
+			tmpRS = childrenToJson(element);
 			//遇到名字相同的，生成jsonarray;
 			key = element.getName();
 			if (tmpRS.containsKey(key)) {
@@ -116,13 +115,13 @@ public class XmlHelper {
 		return rs;
 	}
 
-	public static Element newElementCDATA(String nodeName, String nodeValue) {
+	public static Element createCDATA(String nodeName, String nodeValue) {
 		Element node = DocumentHelper.createElement(nodeName);
 		node.add(DocumentHelper.createCDATA(nodeValue));
 		return node;
 	}
 
-	public static Element newElementLong(String nodeName, Long nodeValue) {
+	public static Element createLong(String nodeName, Long nodeValue) {
 		Element node = DocumentHelper.createElement(nodeName);
 		node.add(DocumentHelper.createText(String.valueOf(nodeValue)));
 		return node;
@@ -137,26 +136,12 @@ public class XmlHelper {
 		}
 	}
 
-	public static String xml2string(Document xmldoc) {
+	public static String toString(Document xmldoc) {
 		return xmldoc.asXML();
 	}
 
-	public static Element newElement(String nodeName) {
+	public static Element createElement(String nodeName) {
 		return DocumentHelper.createElement(nodeName);
 	}
 
-	public static Properties json2Properties(JSONObject json) {
-		Object obj2;
-		String key;
-		Properties pro = new Properties();
-		for (String obj : json.keySet()) {
-			key = obj;
-			obj2 = json.get(key);
-			if (obj2 instanceof Long) {
-				obj2 = ((Long) obj2).intValue();
-			}
-			pro.put(key, obj2);
-		}
-		return pro.size() > 0 ? pro : null;
-	}
 }
