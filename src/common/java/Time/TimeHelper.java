@@ -4,10 +4,7 @@ import common.java.String.StringHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -167,6 +164,15 @@ public class TimeHelper {
     public String nowDate(String format) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern(format);
         return LocalDate.now(this.timeZone).format(df);
+    }
+
+    public String nowTime() {
+        return LocalTime.now(this.timeZone).toString();
+    }
+
+    public String nowTime(String format) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(format);
+        return LocalTime.now(this.timeZone).format(df);
     }
 
     /**
