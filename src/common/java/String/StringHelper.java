@@ -613,4 +613,30 @@ public class StringHelper {
 
         return result;
     }
+
+    public Set<String> toHashSet(String text) {
+        return toHashSet(text, ",");
+    }
+
+    public Set<String> toHashSet(String text, String spilt) {
+        String[] arr = text.split(spilt);
+        Set<String> r = new HashSet<>();
+        for (String s : arr) {
+            r.add(s);
+        }
+        return r;
+    }
+
+    public List<String> toList(String text) {
+        return toList(text, ",");
+    }
+
+    public List<String> toList(String text, String spilt) {
+        String[] arr = text.split(spilt);
+        List<String> r = new ArrayList<>();
+        for (String s : arr) {
+            r.add(s);
+        }
+        return r;
+    }
 }
