@@ -614,11 +614,7 @@ public class StringHelper {
         return result;
     }
 
-    public Set<String> toHashSet(String text) {
-        return toHashSet(text, ",");
-    }
-
-    public Set<String> toHashSet(String text, String spilt) {
+    public static Set<String> toHashSet(String text, String spilt) {
         String[] arr = text.split(spilt);
         Set<String> r = new HashSet<>();
         for (String s : arr) {
@@ -627,16 +623,28 @@ public class StringHelper {
         return r;
     }
 
-    public List<String> toList(String text) {
-        return toList(text, ",");
-    }
-
-    public List<String> toList(String text, String spilt) {
+    public static List<String> toList(String text, String spilt) {
         String[] arr = text.split(spilt);
         List<String> r = new ArrayList<>();
         for (String s : arr) {
             r.add(s);
         }
         return r;
+    }
+
+    public Set<String> toHashSet() {
+        return toHashSet(",");
+    }
+
+    public Set<String> toHashSet(String spilt) {
+        return StringHelper.toHashSet(str, spilt);
+    }
+
+    public List<String> toList() {
+        return toList(",");
+    }
+
+    public List<String> toList(String spilt) {
+        return toList(str, spilt);
     }
 }
