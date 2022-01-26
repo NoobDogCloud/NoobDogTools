@@ -479,12 +479,12 @@ public class FileHelper<T extends FileHelper> {
         return this.outStream;
     }
 
-    protected void unmap(MappedByteBuffer fmap) {
+    protected void unmap(MappedByteBuffer fMap) {
         AccessController.doPrivileged((PrivilegedAction) () -> {
             try {
-                Method getCleanerMethod = fmap.getClass().getMethod("cleaner");
+                Method getCleanerMethod = fMap.getClass().getMethod("cleaner");
                 getCleanerMethod.setAccessible(true);
-                Unsafe.getUnsafe().invokeCleaner(fmap);
+                Unsafe.getUnsafe().invokeCleaner(fMap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -494,9 +494,9 @@ public class FileHelper<T extends FileHelper> {
 
     private void unmapAll() {
         if (fileMap != null) {
-            for (MappedByteBuffer fmap : fileMap) {
-                if (fmap != null && fmap.isLoaded()) {
-                    this.unmap(fmap);
+            for (MappedByteBuffer fMap : fileMap) {
+                if (fMap != null && fMap.isLoaded()) {
+                    this.unmap(fMap);
                 }
             }
         }
