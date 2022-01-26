@@ -53,4 +53,14 @@ public class ObjectHelper {
         }
         return r;
     }
+
+    public static boolean isInvalided(Object o) {
+        if (o == null) {
+            return true;
+        }
+        if (o instanceof String s) {
+            return s.isEmpty();
+        }
+        return false;
+    }
 }
