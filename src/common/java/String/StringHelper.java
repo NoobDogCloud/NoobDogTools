@@ -6,6 +6,7 @@ import org.json.gsc.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +30,30 @@ public class StringHelper {
         return new StringHelper(str);
     }
 
+    public static String join(Set<?> ary) {
+        return join(ary, ",");
+    }
+
+    public static String join(Set<?> ary, Function<Object, Object> func) {
+        return join(ary, ",", func);
+    }
+
+    public static String join(Set<?> ary, String ichar) {
+        return join(ary, ichar, null);
+    }
+
+    public static String join(Set<?> ary, String ichar, Function<Object, Object> func) {
+        StringBuilder r = new StringBuilder();
+        for (Object v : ary) {
+            Object vv = v;
+            if (func != null) {
+                vv = func.apply(v);
+            }
+            r.append(vv).append(ichar);
+        }
+        return StringHelper.trimFrom(r.toString(), ichar.charAt(0));
+    }
+
     /**
      * 字符串按,指定的字符拼接
      *
@@ -39,43 +64,48 @@ public class StringHelper {
         return join(ary, ",");
     }
 
-    public static String join(Set<?> ary, String ichar) {
-        StringBuilder r = new StringBuilder();
-        for (Object v : ary) {
-            r.append(v).append(ichar);
-        }
-        return StringHelper.trimFrom(r.toString(), ichar.charAt(0));
+    public static String join(List<?> ary, Function<Object, Object> func) {
+        return join(ary, ",", func);
     }
 
-    public static String join(Set<?> ary) {
-        return join(ary, ",");
-    }
-
-    /**
-     * 字符串按ichar指定的字符拼接
-     *
-     * @param ary
-     * @param ichar
-     * @return
-     */
     public static String join(List<?> ary, String ichar) {
+        return join(ary, ichar, null);
+    }
+
+    public static String join(List<?> ary, String ichar, Function<Object, Object> func) {
         StringBuilder r = new StringBuilder();
         for (Object v : ary) {
-            r.append(v).append(ichar);
+            Object vv = v;
+            if (func != null) {
+                vv = func.apply(v);
+            }
+            r.append(vv).append(ichar);
         }
         return StringHelper.trimFrom(r.toString(), ichar.charAt(0));
     }
 
     public static String join(String[] strary) {
-        return join(strary, ",", 0, -1);
+        return join(strary, ",", 0, -1, null);
+    }
+
+    public static String join(String[] strary, Function<String, String> func) {
+        return join(strary, ",", 0, -1, func);
     }
 
     public static String join(String[] strary, String ichar) {
-        return join(strary, ichar, 0, -1);
+        return join(strary, ichar, 0, -1, null);
+    }
+
+    public static String join(String[] strary, String ichar, Function<String, String> func) {
+        return join(strary, ichar, 0, -1, func);
     }
 
     public static String join(String[] strary, String ichar, int idx) {
-        return join(strary, ichar, 0, idx);
+        return join(strary, ichar, 0, idx, null);
+    }
+
+    public static String join(String[] strary, String ichar, int idx, Function<String, String> func) {
+        return join(strary, ichar, 0, idx, func);
     }
 
     /**
@@ -87,7 +117,7 @@ public class StringHelper {
      * @param idx    合并执行长度,-1标识直接到结尾
      * @return
      */
-    public static String join(String[] strary, String ichar, int start, int idx) {
+    public static String join(String[] strary, String ichar, int start, int idx, Function<String, String> func) {
         if (idx == -1) {
             idx = strary.length;
         }
@@ -100,7 +130,11 @@ public class StringHelper {
         }
         StringBuilder rs = new StringBuilder();
         for (int i = start; i < len; i++) {
-            rs.append(strary[i]).append(ichar);
+            String v = strary[i];
+            if (func != null) {
+                v = func.apply(v);
+            }
+            rs.append(v).append(ichar);
         }
         return StringHelper.build(rs.toString()).removeTrailingFrom(ichar.length()).toString();
     }
