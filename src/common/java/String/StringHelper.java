@@ -108,6 +108,10 @@ public class StringHelper {
         return join(strary, ichar, 0, idx, func);
     }
 
+    public static String join(String[] strary, String ichar, int start, int idx) {
+        return join(strary, ichar, start, idx, null);
+    }
+
     /**
      * 字符串数组合并成字符串
      *
