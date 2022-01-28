@@ -3,7 +3,7 @@ package common.java.Encrypt;
 import org.json.gsc.JSONArray;
 import org.json.gsc.JSONObject;
 
-public class GscJson {
+public class GscEncrypt {
 
     /**
      * 对html编码解密
@@ -11,11 +11,11 @@ public class GscJson {
      * @param html
      * @return
      */
-    public static String decodeHtmlTag(String html) {
+    private static String _decodeHtmlTag(String html) {
         return html.replaceAll("@t", "/").replaceAll("@w", "+");
     }
 
-    public static String encodeHtmlTag(String html) {
+    private static String _encodeHtmlTag(String html) {
         return html.replaceAll("/", "@t").replaceAll("\\+", "@w");
     }
 
@@ -26,16 +26,20 @@ public class GscJson {
      * @return
      */
     public static String encodeJson(JSONObject json) {
-        return "gsc-json&" + encodeString(json.toString());
+        return "gsc-json&" + _encodeString(json.toString());
     }
 
     public static String encodeJsonArray(JSONArray json) {
-        return "gsc-jsonArray&" + encodeString(json.toString());
+        return "gsc-jsonArray&" + _encodeString(json.toString());
     }
 
     public static String encodeString(String str) {
+        return "gsc-string&" + _encodeString(str);
+    }
+
+    private static String _encodeString(String str) {
         // add header info
-        return encodeHtmlTag(Base64.encode(str));
+        return _encodeHtmlTag(Base64.encode(str));
     }
 
     /**
@@ -49,7 +53,7 @@ public class GscJson {
         if (!getType(header).equals("json")) {
             return null;
         }
-        return JSONObject.toJSON(decodeString(jsonString.substring(header.length() + 1)));
+        return JSONObject.toJSON(_decodeString(jsonString.substring(header.length() + 1)));
     }
 
     public static JSONArray decodeJsonArray(String jsonArrayString) {
@@ -57,11 +61,36 @@ public class GscJson {
         if (!getType(header).equals("jsonArray")) {
             return null;
         }
-        return JSONArray.toJSONArray(decodeString(jsonArrayString.substring(header.length() + 1)));
+        return JSONArray.toJSONArray(_decodeString(jsonArrayString.substring(header.length() + 1)));
     }
 
     public static String decodeString(String str) {
-        return Base64.decode(decodeHtmlTag(str));
+        var header = getHeader(str);
+        if (!getType(header).equals("string")) {
+            return null;
+        }
+        return _decodeString(str.substring(header.length() + 1));
+    }
+
+    public static Object decode(String str) {
+        var header = getHeader(str);
+        if (header == null) {
+            return null;
+        }
+        switch (getType(header)) {
+            case "json":
+                return decodeJson(str);
+            case "jsonArray":
+                return decodeJsonArray(str);
+            case "string":
+                return decodeString(str);
+            default:
+                return null;
+        }
+    }
+
+    private static String _decodeString(String str) {
+        return Base64.decode(_decodeHtmlTag(str));
     }
 
     public static String getHeader(String str) {
