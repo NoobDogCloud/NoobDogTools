@@ -1,4 +1,4 @@
-package common.java.args;
+package common.java.Args;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -9,9 +9,9 @@ public class ArgsHelper {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (arg.startsWith("-")) {
-                String key = arg.substring(1);
+                // String key = arg.substring(1);
                 Object value = args[i + 1];
-                dictionary.put(key, value);
+                dictionary.put(arg, value);
             }
         }
         return dictionary;
