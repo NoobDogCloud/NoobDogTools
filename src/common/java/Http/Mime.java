@@ -1,7 +1,7 @@
 package common.java.Http;
 
-import net.sf.jmimemagic.Magic;
-import net.sf.jmimemagic.MagicMatch;
+import gfw.Magic;
+import gfw.MagicMatch;
 
 import java.io.File;
 
