@@ -9,9 +9,9 @@ public class ArgsHelper {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (arg.startsWith("-")) {
-                // String key = arg.substring(1);
-                Object value = args[i + 1];
-                dictionary.put(arg, value);
+                if (i + 1 < args.length) {
+                    dictionary.put(arg, args[i + 1]);
+                }
             }
         }
         return dictionary;
