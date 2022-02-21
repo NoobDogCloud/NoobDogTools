@@ -27,6 +27,11 @@ public class FileHelper<T extends FileHelper> {
     private MappedByteBuffer[] fileMap;
     private Consumer<File> func;
 
+    protected FileHelper(File file) {
+        this.file = file;
+        this.charset = Charset.defaultCharset();
+    }
+
     protected FileHelper(File file, Charset charset) {
         this.file = file;
         this.charset = charset;
