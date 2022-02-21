@@ -3,17 +3,14 @@ package common.java.File;
 import common.java.String.StringHelper;
 import common.java.Time.TimeHelper;
 import common.java.nLogger.nLogger;
-import sun.misc.Unsafe;
 
 import java.io.*;
-import java.lang.reflect.Method;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,19 +19,25 @@ import java.util.function.Consumer;
 public class FileHelper<T extends FileHelper> {
     protected static final int MAX_BLOCK_LENGTH = 0xffffffff;
     protected final File file;
-    public long readPoint = 0;
-    public long writePoint = 0;
+    protected Charset charset;
+    // public long readPoint = 0;
+    // public long writePoint = 0;
     private FileInputStream inStream;
     private FileOutputStream outStream;
     private MappedByteBuffer[] fileMap;
     private Consumer<File> func;
 
-    protected FileHelper(File file) {
+    protected FileHelper(File file, Charset charset) {
         this.file = file;
+        this.charset = charset;
     }
 
     public static FileHelper load(File file) {
-        return new FileHelper<>(file);
+        return load(file, Charset.defaultCharset());
+    }
+
+    public static FileHelper load(File file, Charset charset) {
+        return new FileHelper<>(file, charset);
     }
 
     // -----------------------------------------------------------
@@ -480,16 +483,7 @@ public class FileHelper<T extends FileHelper> {
     }
 
     protected void unmap(MappedByteBuffer fMap) {
-        AccessController.doPrivileged((PrivilegedAction) () -> {
-            try {
-                Method getCleanerMethod = fMap.getClass().getMethod("cleaner");
-                getCleanerMethod.setAccessible(true);
-                Unsafe.getUnsafe().invokeCleaner(fMap);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        });
+        fMap.clear();
     }
 
     private void unmapAll() {
