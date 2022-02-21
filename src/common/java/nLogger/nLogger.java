@@ -2,7 +2,7 @@ package common.java.nLogger;
 
 public class nLogger {
     public static LoggerOut clientFunc = null;
-    private static boolean isDebug = false;
+    private static boolean isDebug = true;
 
     public static void onLogger(LoggerOut event) {
         clientFunc = event;
