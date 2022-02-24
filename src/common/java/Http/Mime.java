@@ -6,12 +6,16 @@ import gfw.MagicMatch;
 import java.io.File;
 
 public class Mime {
-    public static final String defaultMime = "text/plain";
+    public static final String defaultMime = "application/octet-stream";
 
     public static String getMime(byte[] buff) {
         try {
             MagicMatch match = Magic.getMagicMatch(buff);
-            return match.getMimeType();
+            String typeName = match.getMimeType();
+            if (typeName.startsWith("text")) {
+                return typeName + ":charset=UTF-8";
+            }
+            return typeName;
         } catch (Exception e) {
             return defaultMime;
         }
