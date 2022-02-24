@@ -46,10 +46,6 @@ public class FileHelper<T extends FileHelper<?>> {
     }
 
     // -----------------------------------------------------------
-    public static String newTempFileName() {
-        return getTempDirectory() + "GrapeFWv3" + UUID.randomUUID();
-    }
-
     /**
      * 获得系统临时文件夹
      */
@@ -79,7 +75,7 @@ public class FileHelper<T extends FileHelper<?>> {
     public static File buildTempFileAt(String path) {
         try {
             File newFile = File.createTempFile("grape_tmp", null);
-            return FileHelper.getFile(path, newFile);
+            return FileHelper.readFile(path, newFile);
         } catch (IOException e) {
             throw new RuntimeException(path, e);
         }
@@ -166,7 +162,7 @@ public class FileHelper<T extends FileHelper<?>> {
         File rsFile = null;
         if (FileHelper.createFile(targetPath)) {//目标文件新建成功
             File targetFile = new File(targetPath);
-            rsFile = FileHelper.getFile(sourcePath, targetFile);
+            rsFile = FileHelper.readFile(sourcePath, targetFile);
         }
         return rsFile != null;
     }
@@ -177,7 +173,7 @@ public class FileHelper<T extends FileHelper<?>> {
      * @param path    来源文件地址
      * @param newFile 目标文件地址
      */
-    public static File getFile(String path, File newFile) {
+    public static File readFile(String path, File newFile) {
         // 复制 path 文件内容到 newFile
         File oldFile = new File(path);
         try {
