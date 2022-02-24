@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class VerifyFileType {
@@ -109,16 +108,25 @@ public class VerifyFileType {
      * @return
      */
     public static String getFileType(String filePath) {
+        try {
+            return getFileType(new FileInputStream(filePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String getFileType(File file) {
+        return getFileType(file.getAbsolutePath());
+    }
+
+    public static String getFileType(FileInputStream is) {
         String res = null;
         try {
-            is = new FileInputStream(filePath);
             byte[] b = new byte[10];
             is.read(b, 0, b.length);
             String fileCode = bytesToHexString(b);
-
-            Iterator<String> keyIter = FILE_TYPE_MAP.keySet().iterator();
-            while (keyIter.hasNext()) {
-                String key = keyIter.next();
+            for (String key : FILE_TYPE_MAP.keySet()) {
                 // 验证前5个字符比较
                 if (key.toLowerCase().startsWith(fileCode.toLowerCase().substring(0, 5))
                         || fileCode.toLowerCase().substring(0, 5).startsWith(key.toLowerCase())) {
@@ -126,15 +134,9 @@ public class VerifyFileType {
                     break;
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return res;
-    }
-
-    public static String getFileType(File file) {
-        return getFileType(file.getAbsolutePath());
     }
 }
