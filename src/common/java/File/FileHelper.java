@@ -474,6 +474,17 @@ public class FileHelper<T extends FileHelper<?>> {
         return this.inStream;
     }
 
+    protected void closeInputStream() {
+        if (inStream != null) {
+            try {
+                inStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            inStream = null;
+        }
+    }
+
     protected FileOutputStream getOutputStream() {
         if (outStream == null) {
             try {
@@ -484,6 +495,17 @@ public class FileHelper<T extends FileHelper<?>> {
             }
         }
         return this.outStream;
+    }
+
+    protected void closeOutputStream() {
+        if (outStream != null) {
+            try {
+                outStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            outStream = null;
+        }
     }
 
     protected void unmap(MappedByteBuffer fMap) {
