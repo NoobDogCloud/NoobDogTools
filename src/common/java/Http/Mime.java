@@ -13,7 +13,7 @@ public class Mime {
             MagicMatch match = Magic.getMagicMatch(buff);
             String typeName = match.getMimeType();
             if (typeName.startsWith("text")) {
-                return typeName + ":charset=UTF-8";
+                return typeName + "; charset=UTF-8";
             }
             return typeName;
         } catch (Exception e) {
