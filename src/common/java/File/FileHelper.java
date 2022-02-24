@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class FileHelper<T extends FileHelper> {
+public class FileHelper<T extends FileHelper<?>> {
     protected static final int MAX_BLOCK_LENGTH = 0xffffffff;
     protected final File file;
     protected Charset charset;
@@ -37,11 +37,11 @@ public class FileHelper<T extends FileHelper> {
         this.charset = charset;
     }
 
-    public static FileHelper load(File file) {
+    public static FileHelper<?> load(File file) {
         return load(file, Charset.defaultCharset());
     }
 
-    public static FileHelper load(File file, Charset charset) {
+    public static FileHelper<?> load(File file, Charset charset) {
         return new FileHelper<>(file, charset);
     }
 
@@ -75,12 +75,11 @@ public class FileHelper<T extends FileHelper> {
      * 获得文件通过从本地或者网络
      *
      * @param path 数据来源
-     * @return
      */
     public static File buildTempFileAt(String path) {
         try {
             File newFile = File.createTempFile("grape_tmp", null);
-            return FileHelper.getFileEx(path, newFile);
+            return FileHelper.getFile(path, newFile);
         } catch (IOException e) {
             throw new RuntimeException(path, e);
         }
@@ -89,9 +88,8 @@ public class FileHelper<T extends FileHelper> {
     public static String getUUIDFileName(String fileName) {
         // 将文件名的前面部分进行截取：xx.jpg   --->   .jpg
         int idx = fileName.lastIndexOf(".");
-        String extention = fileName.substring(idx);
-        String uuidFileName = TimeHelper.build().timestampToDatetime(TimeHelper.getNowTimestampByZero(), "yyyyMMddHHmmss") + "_" + UUID.randomUUID().toString().replace("-", "") + extention;
-        return uuidFileName;
+        String extension = fileName.substring(idx);
+        return TimeHelper.build().timestampToDatetime(TimeHelper.getNowTimestampByZero(), "yyyyMMddHHmmss") + "_" + UUID.randomUUID().toString().replace("-", "") + extension;
     }
 
     /**
@@ -163,13 +161,12 @@ public class FileHelper<T extends FileHelper> {
      *
      * @param sourcePath 来源文件地址
      * @param targetPath 目的文件地址
-     * @return
      */
     public static boolean copyFile(String sourcePath, String targetPath) {
         File rsFile = null;
         if (FileHelper.createFile(targetPath)) {//目标文件新建成功
             File targetFile = new File(targetPath);
-            rsFile = FileHelper.getFileEx(sourcePath, targetFile);
+            rsFile = FileHelper.getFile(sourcePath, targetFile);
         }
         return rsFile != null;
     }
@@ -179,9 +176,8 @@ public class FileHelper<T extends FileHelper> {
      *
      * @param path    来源文件地址
      * @param newFile 目标文件地址
-     * @return
      */
-    public static File getFileEx(String path, File newFile) {
+    public static File getFile(String path, File newFile) {
         // 复制 path 文件内容到 newFile
         File oldFile = new File(path);
         try {
@@ -195,14 +191,13 @@ public class FileHelper<T extends FileHelper> {
     /**
      * 获得文件类型(获得文件扩展名)
      *
-     * @param filepath
-     * @return
+     * @param filePath 文件路径
      */
-    public static String getFileType(String filepath) {
-        File f = new File(filepath);
+    public static String getFileExtension(String filePath) {
+        File f = new File(filePath);
         String[] strings;
         if (f.exists()) {
-            strings = filepath.split("\\.");
+            strings = filePath.split("\\.");
             return strings.length > 0 ? strings[strings.length - 1] : "";
         } else {
             return "";
@@ -210,23 +205,31 @@ public class FileHelper<T extends FileHelper> {
     }
 
     /**
-     * 读文件内容到内存
-     *
-     * @param
-     * @return
+     * 根据文件头获得文件真实类型
      */
-    public static byte[] getFile(String path) {
-        return getFile(new File(path));
+    public static String getRealFileType(String filePath) {
+        return VerifyFileType.getFileType(filePath);
     }
 
-    public static byte[] getFile(File file) {
+    public static String getRealFileType(File file) {
+        return VerifyFileType.getFileType(file);
+    }
+
+    /**
+     * 读文件内容到内存
+     */
+    public static byte[] readFile(String path) {
+        return readFile(new File(path));
+    }
+
+    public static byte[] readFile(File file) {
         ByteArrayOutputStream outByte = new ByteArrayOutputStream();
         try (InputStream in = new FileInputStream(file)) {
             //System.out.println("以字节为单位读取文件内容，一次读多个字节：");一次读多个字节
-            byte[] tempbytes = new byte[100];
+            byte[] tempBytes = new byte[100];
             int byteread;
-            while ((byteread = in.read(tempbytes)) != -1) {
-                outByte.write(tempbytes, 0, byteread);
+            while ((byteread = in.read(tempBytes)) != -1) {
+                outByte.write(tempBytes, 0, byteread);
             }
         } catch (Exception e1) {
             nLogger.logInfo(e1);
@@ -245,7 +248,8 @@ public class FileHelper<T extends FileHelper> {
         }
     }
 
-    public static <T> void deleteFile(List<T> filepath) {
+    public static <T> int deleteFile(List<T> filepath) {
+        int errNo = 0;
         for (Object obj : filepath) {
             File f = null;
             if (obj instanceof File) {
@@ -254,9 +258,12 @@ public class FileHelper<T extends FileHelper> {
                 f = new File((String) obj);
             }
             if (f != null && f.exists()) {
-                f.delete();
+                if (!f.delete()) {
+                    errNo++;
+                }
             }
         }
+        return errNo;
     }
 
     /**
@@ -279,10 +286,8 @@ public class FileHelper<T extends FileHelper> {
         File destFile = new File(dest);
         if (destFile.exists()) {
             //目标文件已经存在
-            if (!over) {
+            if (!over || !destFile.delete()) {
                 return false;
-            } else {
-                destFile.delete();
             }
         }
         return srcFile.renameTo(destFile);
@@ -299,10 +304,8 @@ public class FileHelper<T extends FileHelper> {
         File destFile = new File(dest);
         if (destFile.exists()) {
             //目标文件已经存在
-            if (!over) {
+            if (!over || !destFile.delete()) {
                 return false;
-            } else {
-                destFile.delete();
             }
         }
         try {
