@@ -62,15 +62,9 @@
         <dependency>
             <groupId>GrapeSoft</groupId>
             <artifactId>gfwJson</artifactId>
-            <version>2.0.1</version>
+            <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>GrapeSoft</groupId>
-            <artifactId>gfwHttpClient</artifactId>
-            <version>2.0.1</version>
-        </dependency>
-
     </dependencies>
 
     <build>
