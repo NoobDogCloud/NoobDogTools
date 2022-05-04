@@ -43,5 +43,4 @@ public class ThreadHelper extends Thread {
             nLogger.logInfo(e);
         }
     }
-
 }

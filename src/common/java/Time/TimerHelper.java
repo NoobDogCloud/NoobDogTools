@@ -2,6 +2,7 @@ package common.java.Time;
 
 import common.java.Thread.ThreadHelper;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -9,13 +10,14 @@ import java.util.function.Supplier;
  */
 public class TimerHelper {
     public static void schedule(Runnable task, long delay_seconds) {
+        var delay = TimeUnit.SECONDS.toMillis(delay_seconds);
         while (true) {
             try {
                 task.run();
             } catch (Exception e) {
                 break;
             }
-            ThreadHelper.sleep(delay_seconds);
+            ThreadHelper.sleep(delay);
         }
     }
 
@@ -28,11 +30,12 @@ public class TimerHelper {
      */
     public static boolean schedule(Supplier<Boolean> task, long delay_seconds, long time_out) {
         long total_count = time_out / delay_seconds;
+        var delay = TimeUnit.SECONDS.toMillis(delay_seconds);
         for (int i = 0; i < total_count; i++) {
             if (task.get()) {
                 return true;
             }
-            ThreadHelper.sleep(delay_seconds);
+            ThreadHelper.sleep(delay);
         }
         return false;
     }
