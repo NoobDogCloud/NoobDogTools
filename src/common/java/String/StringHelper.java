@@ -406,6 +406,17 @@ public class StringHelper {
     }
 
     /**
+     * 首字母大写,如果已经大写不处理
+     */
+    public static String captureName(String str) {
+        char[] v = str.toCharArray();
+        if (v[0] >= 'a' && v[0] <= 'z') {
+            v[0] -= 32;
+        }
+        return String.valueOf(v);
+    }
+
+    /**
      * 删除字符串第1个字符
      *
      * @param
