@@ -1,5 +1,6 @@
 package common.java.String;
 
+import common.java.Random.Random;
 import org.json.gsc.JSONArray;
 import org.json.gsc.JSONObject;
 
@@ -12,13 +13,7 @@ import java.util.regex.Pattern;
 
 
 public class StringHelper {
-    private final static Random random;
-    private final static Pattern pattern;
-
-    static {
-        random = new Random();
-        pattern = Pattern.compile("\\s*|\t|\r|\n");
-    }
+    private final static Pattern pattern = Pattern.compile("\\s*|\t|\r|\n");
 
     private String str;
 
@@ -150,7 +145,7 @@ public class StringHelper {
         String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; ++i) {
-            int number = random.nextInt(62);// [0,62)
+            int number = Random.next(62);// [0,62)
             sb.append(str.charAt(number));
         }
         return sb.toString();
@@ -376,7 +371,7 @@ public class StringHelper {
     }
 
     public static String randomString(int max_len) {
-        int l = random.nextInt(max_len) + 1;
+        int l = Random.next(max_len) + 1;
         return createRandomCode(l);
     }
 
