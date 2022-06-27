@@ -8,7 +8,15 @@ import java.util.Enumeration;
 import java.util.List;
 
 public class IPHelper {
-    public static List<String> localIPs() throws SocketException {
+    public static List<String> localIPs() {
+        try {
+            return localIPsImpl(0);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    private static List<String> localIPsImpl(int status) throws SocketException {
         List<String> ips = new ArrayList<>();
         Enumeration<NetworkInterface> interfs = NetworkInterface.getNetworkInterfaces();
         while (interfs.hasMoreElements()) {
@@ -17,24 +25,38 @@ public class IPHelper {
             while (addres.hasMoreElements()) {
                 InetAddress in = addres.nextElement();
                 if (in instanceof Inet4Address) {
-                    ips.add(in.getHostAddress());
+                    if (status == 0 || status == 1) {
+                        ips.add(in.getHostAddress());
+                    }
                 } else if (in instanceof Inet6Address) {
-                    ips.add(in.getHostAddress());
+                    if (status == 0 || status == 2) {
+                        ips.add(in.getHostAddress());
+                    }
                 }
             }
         }
         return ips;
     }
 
-    public static String localIP() {
-        List<String> ips = null;
+    public static List<String> localIPv4s() {
         try {
-            ips = localIPs();
-        } catch (SocketException e) {
-            // TODO Auto-generated catch block
-            nLogger.logInfo(e);
+            return localIPsImpl(1);
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
-        return ips != null && ips.size() > 0 ? ips.get(0) : "127.0.0.1";
+    }
+
+    public static List<String> localIPv6s() {
+        try {
+            return localIPsImpl(2);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public static String localIP() {
+        List<String> ips = localIPs();
+        return ips.size() > 0 ? ips.get(0) : "127.0.0.1";
     }
 
     public static boolean isLocalIP(String ip) {
