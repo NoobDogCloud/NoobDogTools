@@ -135,7 +135,8 @@ public class StringHelper {
             }
             rs.append(v).append(ichar);
         }
-        return StringHelper.build(rs.toString()).removeTrailingFrom(ichar.length()).toString();
+        String v = rs.toString();
+        return StringHelper.build(v).removeTrailingFrom(ichar.length()).toString();
     }
 
     /**
@@ -400,7 +401,7 @@ public class StringHelper {
      * @return
      */
     public StringHelper removeTrailingFrom(int i) {
-        str = (i < 1) ? null : str.length() > 0 ? str.substring(0, str.length() - i) : "";
+        str = (i < 1) ? str : str.length() > 0 ? str.substring(0, str.length() - i) : str;
         return this;
     }
 
@@ -637,5 +638,13 @@ public class StringHelper {
 
     public List<String> toList(String spilt) {
         return toList(str, spilt);
+    }
+
+    /**
+     * 获得字符模板对象
+     * 将 ${key} 内字符按照输入的key-value替换
+     */
+    public StringTemplate toTemplate() {
+        return new StringTemplate(str);
     }
 }
