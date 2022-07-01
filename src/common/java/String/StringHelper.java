@@ -158,23 +158,7 @@ public class StringHelper {
      * @return
      */
     public static String typeString(Object obj) {
-        String rString;
-        String r2;
-        if (obj != null) {
-            r2 = obj.toString();
-            if (obj instanceof String) {
-                rString = (isexp(r2) ? r2 : "\"" + obj + "\"");
-            } else if (obj instanceof JSONObject) {
-                rString = "'" + r2 + "'";
-            } else if (obj instanceof JSONArray) {
-                rString = "\"" + r2 + "\"";
-            } else {
-                rString = r2;
-            }
-        } else {
-            rString = "null";
-        }
-        return rString;
+        return typeString(obj, "\"");
     }
 
     /**
@@ -189,7 +173,7 @@ public class StringHelper {
         if (obj != null) {
             r2 = obj.toString();
             if (obj instanceof String) {
-                rString = (isexp(r2) ? r2 : replace_char + obj + replace_char);
+                rString = replace_char + obj + replace_char;
             } else if (obj instanceof JSONObject) {
                 rString = replace_char + r2 + replace_char;
             } else if (obj instanceof JSONArray) {
@@ -201,43 +185,6 @@ public class StringHelper {
             rString = "null";
         }
         return rString;
-    }
-
-    /**
-     * 是否是sql表达式字符串
-     *
-     * @param str
-     * @return
-     */
-    private static boolean isexp(String str) {
-        if (str.indexOf(":") >= 0) {
-            return false;
-        }
-        boolean rb = false;
-        String[] vsStrings;
-        String[] sl = {"\\+", "-", "\\*", "%", "\\/", "\\\\"};
-        try {
-            for (String s : sl) {
-                //String[] lString = str.split(sl[i]);
-                vsStrings = str.split(s);
-                if (vsStrings.length > 2) {
-                    rb = true;
-                    for (String vsString : vsStrings) {
-                        if (vsString.equals("")) {
-                            rb = false;
-                            break;
-                        }
-                    }
-                    if (rb) {//某一个计算表达式成立，跳出循环
-                        break;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            rb = false;
-        }
-
-        return rb;
     }
 
     public static String trimFrom(String str, char ichar) {
