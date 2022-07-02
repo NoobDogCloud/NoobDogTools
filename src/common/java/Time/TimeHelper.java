@@ -106,7 +106,6 @@ public class TimeHelper {
      *
      * @param s
      * @return 毫秒
-     * @throws ParseException
      */
     public long dateTimeToTimestamp(String s) {
         return dateTimeToTimestamp(s, "yyyy-MM-dd HH:mm:ss");
@@ -119,10 +118,8 @@ public class TimeHelper {
 
     /**
      * 日期字符串转换成Unix时间戳
-     *
      * @param s
      * @return
-     * @throws ParseException
      */
     public long dateToTimestamp(String s) {
         return dateToTimestamp(s, "yyyy-MM-dd");

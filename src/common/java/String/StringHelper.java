@@ -361,8 +361,6 @@ public class StringHelper {
 
     /**
      * 删除字符串第1个字符
-     *
-     * @param
      * @return
      */
     public StringHelper removeLeadingFrom() {
@@ -373,7 +371,6 @@ public class StringHelper {
     /**
      * 删除字符串前面N个字符
      *
-     * @param
      * @param i
      * @return
      */
@@ -384,9 +381,6 @@ public class StringHelper {
 
     /**
      * 删除字符串最后1个字符
-     *
-     * @param
-     * @return
      */
     public StringHelper removeTrailingFrom() {
         str = str.length() > 0 ? str.substring(0, str.length() - 1) : "";
@@ -395,8 +389,6 @@ public class StringHelper {
 
     /**
      * 删除字符串最后N个字符
-     *
-     * @param
      * @param i
      * @return
      */
@@ -407,9 +399,6 @@ public class StringHelper {
 
     /**
      * 删除字符串前后第一个字符
-     *
-     * @param
-     * @return
      */
     public StringHelper removeFrom() {
         if (str.length() > 0) {
@@ -425,7 +414,6 @@ public class StringHelper {
      * 修复字符串
      * <p>
      * 删除第一个或者最后一个与ichar相同 的 字符
-     *
      * @param ichar
      * @return
      */

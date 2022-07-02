@@ -11,10 +11,7 @@ public class ImageHelper {
     /**
      * @param imgStr base64编码字符串
      * @param path   图片路径-具体到文件
-     * @return
-     * @Description: 将base64编码字符串转换为图片
-     * @Author:
-     * @CreateTime:
+     * &#064;Description:  将base64编码字符串转换为图片
      */
     public static boolean generateImage(String imgStr, String path) {
         if (imgStr == null) {
@@ -40,10 +37,7 @@ public class ImageHelper {
     }
 
     /**
-     * @return
-     * @Description: 根据图片地址转换为base64编码字符串
-     * @Author:
-     * @CreateTime:
+     * &#064;Description:  根据图片地址转换为base64编码字符串
      */
     public static String getImageStr(String imgFile) {
         String rString = null;

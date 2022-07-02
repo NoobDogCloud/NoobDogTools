@@ -32,8 +32,7 @@ public class EventBus {
                 try {
                     while (true) {
                         Object msg = queue.take();
-                        if (msg instanceof EventGrape) {//是订阅触发
-                            EventGrape eg = (EventGrape) msg;
+                        if (msg instanceof EventGrape eg) {//是订阅触发
                             String eName = eg.getEventName();
                             if (subscribe.containsKey(eName)) {//是否已经订阅
                                 Object param = eg.getEventParam();

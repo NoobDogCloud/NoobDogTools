@@ -26,7 +26,7 @@ public class TimerHelper {
      * @param delay_seconds 延迟时间
      * @param time_out      超时时间
      * @return 是否超时
-     * @apiNote 定时任务, 支持超时中断
+     * 定时任务, 支持超时中断
      */
     public static boolean schedule(Supplier<Boolean> task, long delay_seconds, long time_out) {
         long total_count = time_out / delay_seconds;
