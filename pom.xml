@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>gfw</groupId>
-    <artifactId>gfwCommon</artifactId>
-    <version>3.0.0</version>
+    <groupId>NoobDog</groupId>
+    <artifactId>tools</artifactId>
+    <version>0.0.1</version>
     <properties>
         <gsc.version>${project.version}</gsc.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.16</version>
+            <version>0.4.17</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -167,15 +167,4 @@
             </build>
         </profile>
     </profiles>
-
-    <distributionManagement>
-        <repository>
-            <id>rdc-releases</id>
-            <url>https://packages.aliyun.com/maven/repository/2008022-release-LfFRDq</url>
-        </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <url>https://packages.aliyun.com/maven/repository/2008022-snapshot-oYlpxF</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
