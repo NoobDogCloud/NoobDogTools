@@ -124,7 +124,7 @@ public class NumberHelper {
 
 	public static boolean isNumeric(Object str) {
 		var v = StringHelper.toString(str);
-		if (v == null) {
+		if (v == null || v.length() == 0) {
 			return false;
 		}
 		for (int i = v.length(); --i >= 0; ) {
