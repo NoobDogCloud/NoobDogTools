@@ -20,7 +20,7 @@ public class nLogger {
 
     private static String getLogInfo(Exception e, LogInfo.InfoType type, String in) {
         LogInfo infoObj = e == null ? LogInfo.build() : LogInfo.build(e);
-        return infoObj.level(LogInfo.InfoType.DEBUG)
+        return infoObj.level(type)
                 .info(in)
                 .toString();
     }
@@ -55,7 +55,7 @@ public class nLogger {
         if (isDebug) {
             System.out.println(info);
         }
-        out(info, LogInfo.InfoType.DEBUG);
+        out(info, LogInfo.InfoType.LOG);
     }
 
     public static void warnInfo(Exception e) {
@@ -67,7 +67,7 @@ public class nLogger {
     }
 
     public static void warnInfo(Exception e, String in) {
-        System.out.println(getLogInfo(e, LogInfo.InfoType.LOG, in));
+        System.out.println(getLogInfo(e, LogInfo.InfoType.WARN, in));
     }
 
     public static void errorInfo(Exception e) {
