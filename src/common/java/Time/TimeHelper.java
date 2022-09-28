@@ -103,6 +103,7 @@ public class TimeHelper {
 
     /**
      * 日期字符串转换成Unix时间戳
+     * yyyy-MM-dd HH:mm:ss
      *
      * @param s
      * @return 毫秒
@@ -118,6 +119,8 @@ public class TimeHelper {
 
     /**
      * 日期字符串转换成Unix时间戳
+     * yyyy-MM-dd
+     *
      * @param s
      * @return
      */
@@ -132,6 +135,7 @@ public class TimeHelper {
 
     /**
      * Unix时间戳转换成日期时间字符串
+     * yyyy-MM-dd HH:mm:ss
      *
      * @param ms 时间戳
      * @return
@@ -228,5 +232,44 @@ public class TimeHelper {
                 StringHelper.build(year).autoGenericCode(4) + "-" + StringHelper.build(month).autoGenericCode(2) + "-" + StringHelper.build(day).autoGenericCode(2) + " 23:59:59"
         );
         return r;
+    }
+
+    /**
+     * 任意格式日期或者日期时间字符串转时间戳
+     *
+     * @param str 日期或者日期时间字符串
+     * @return 时间戳(毫秒)
+     */
+    public long formatToTimestamp(String str) {
+        List<String> timeFormatYMD = new ArrayList<>();
+        List<String> timeFormatHMS = new ArrayList<>();
+        timeFormatYMD.add("yyyy-MM-dd");
+        timeFormatYMD.add("yyyy/MM/dd");
+        timeFormatYMD.add("yyyy年MM月dd日");
+        timeFormatYMD.add(null);
+
+        timeFormatHMS.add("HH:mm:ss");
+        timeFormatHMS.add("HH:mm");
+        timeFormatHMS.add("HH点mm分ss秒");
+        timeFormatHMS.add("HH点mm分");
+        timeFormatHMS.add("HH时mm分ss秒");
+        timeFormatHMS.add("HH时mm分");
+        timeFormatHMS.add(null);
+        String _format;
+        for (String _formatYMD : timeFormatYMD) {
+            for (String _formatHMS : timeFormatHMS) {
+                try {
+                    _format = _formatYMD == null ? _formatHMS : _formatYMD + " " + _formatHMS;
+                    if (_formatYMD == null && _formatHMS == null) {
+                        break;
+                    }
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern(_format);
+                    return LocalDateTime.parse(str, format)
+                            .toInstant(ZoneOffset.of(timeZone.getId())).toEpochMilli();
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return 0;
     }
 }
