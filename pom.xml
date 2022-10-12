@@ -6,7 +6,7 @@
 
     <groupId>io.github.noobdogcloud</groupId>
     <artifactId>tools</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <properties>
         <gsc.version>${project.version}</gsc.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>io.github.noobdogcloud</groupId>
             <artifactId>JsonHelper</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
