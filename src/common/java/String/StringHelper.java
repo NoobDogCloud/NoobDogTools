@@ -577,6 +577,20 @@ public class StringHelper {
         return this;
     }
 
+    public static Set<String> toHashSet(String text, String spilt) {
+        String[] arr = text.split(spilt);
+        Set<String> r = new HashSet<>();
+        Collections.addAll(r, arr);
+        return r;
+    }
+
+    public static List<String> toList(String text, String spilt) {
+        String[] arr = text.split(spilt);
+        List<String> r = new ArrayList<>();
+        Collections.addAll(r, arr);
+        return r;
+    }
+
     /**
      * 不够位数的在前面补0，保留num的长度位数字
      *
@@ -584,32 +598,11 @@ public class StringHelper {
      * @return
      */
     public String autoGenericCode(int num) {
-        String result;
         // 保留num的位数
         // 0 代表前面补充0
         // num 代表长度为4
         // d 代表参数为正数型
-        result = String.format("%0" + num + "d", Integer.parseInt(str) + 1);
-
-        return result;
-    }
-
-    public static Set<String> toHashSet(String text, String spilt) {
-        String[] arr = text.split(spilt);
-        Set<String> r = new HashSet<>();
-        for (String s : arr) {
-            r.add(s);
-        }
-        return r;
-    }
-
-    public static List<String> toList(String text, String spilt) {
-        String[] arr = text.split(spilt);
-        List<String> r = new ArrayList<>();
-        for (String s : arr) {
-            r.add(s);
-        }
-        return r;
+        return String.format("%0" + num + "d", Integer.parseInt(str));
     }
 
     public Set<String> toHashSet() {
