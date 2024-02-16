@@ -8,10 +8,10 @@ import java.io.StringWriter;
 
 public class LogInfo {
     private final Exception e;
-    private InfoType type;
+    private LogType.InfoType type;
     private String info;
 
-    private LogInfo(Exception e, InfoType type) {
+    private LogInfo(Exception e, LogType.InfoType type) {
         this.e = e;
         this.type = type;
         if (this.e != null) {
@@ -20,18 +20,18 @@ public class LogInfo {
     }
 
     public static LogInfo build() {
-        return new LogInfo(null, InfoType.LOG);
+        return new LogInfo(null, LogType.InfoType.LOG);
     }
 
     public static LogInfo build(Exception e) {
-        return new LogInfo(e, InfoType.LOG);
+        return new LogInfo(e, LogType.InfoType.LOG);
     }
 
-    public static LogInfo build(Exception e, InfoType type) {
+    public static LogInfo build(Exception e, LogType.InfoType type) {
         return new LogInfo(e, type);
     }
 
-    public LogInfo level(InfoType type) {
+    public LogInfo level(LogType.InfoType type) {
         this.type = type;
         return this;
     }
@@ -72,16 +72,5 @@ public class LogInfo {
         return rs;
     }
 
-    public enum InfoType {
-        LOG("Log"), WARN("Warn"), ERROR("Error"), DEBUG("Debug");
-        private final String text;
 
-        InfoType(String in) {
-            text = in;
-        }
-
-        public String toString() {
-            return text;
-        }
-    }
 }

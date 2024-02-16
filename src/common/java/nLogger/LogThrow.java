@@ -8,10 +8,10 @@ import java.io.StringWriter;
 
 public class LogThrow {
     private final Throwable e;
-    private LogThrow.InfoType type;
+    private LogType.InfoType type;
     private String info;
 
-    private LogThrow(Throwable e, LogThrow.InfoType type) {
+    private LogThrow(Throwable e, LogType.InfoType type) {
         this.e = e;
         this.type = type;
         if (this.e != null) {
@@ -20,18 +20,18 @@ public class LogThrow {
     }
 
     public static LogThrow build() {
-        return new LogThrow(null, LogThrow.InfoType.LOG);
+        return new LogThrow(null, LogType.InfoType.LOG);
     }
 
     public static LogThrow build(Throwable e) {
-        return new LogThrow(e, LogThrow.InfoType.LOG);
+        return new LogThrow(e, LogType.InfoType.LOG);
     }
 
-    public static LogThrow build(Throwable e, LogThrow.InfoType type) {
+    public static LogThrow build(Throwable e, LogType.InfoType type) {
         return new LogThrow(e, type);
     }
 
-    public LogThrow level(LogThrow.InfoType type) {
+    public LogThrow level(LogType.InfoType type) {
         this.type = type;
         return this;
     }
@@ -72,16 +72,5 @@ public class LogThrow {
         return rs;
     }
 
-    public enum InfoType {
-        LOG("Log"), WARN("Warn"), ERROR("Error"), DEBUG("Debug");
-        private final String text;
 
-        InfoType(String in) {
-            text = in;
-        }
-
-        public String toString() {
-            return text;
-        }
-    }
 }

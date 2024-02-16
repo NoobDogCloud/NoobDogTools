@@ -12,20 +12,20 @@ public class nLogger {
         isDebug = state;
     }
 
-    private static void out(String info, LogInfo.InfoType type) {
+    private static void out(String info, LogType.InfoType type) {
         if (clientFunc != null) {
             clientFunc.out(info, type);
         }
     }
 
-    private static String getLogInfo(Exception e, LogInfo.InfoType type, String in) {
+    private static String getLogInfo(Exception e, LogType.InfoType type, String in) {
         LogInfo infoObj = e == null ? LogInfo.build() : LogInfo.build(e);
         return infoObj.level(type)
                 .info(in)
                 .toString();
     }
 
-    private static String getLogInfo(Throwable e, LogThrow.InfoType type, String in) {
+    private static String getLogInfo(Throwable e, LogType.InfoType type, String in) {
         LogThrow infoObj = e == null ? LogThrow.build() : LogThrow.build(e);
         return infoObj.level(type)
                 .info(in)
@@ -48,21 +48,25 @@ public class nLogger {
         if (!isDebug) {
             return;
         }
-        String info = getLogInfo(e, LogInfo.InfoType.DEBUG, in);
+        String info = getLogInfo(e, LogType.InfoType.DEBUG, in);
         System.out.println(info);
-        out(info, LogInfo.InfoType.DEBUG);
+        out(info, LogType.InfoType.DEBUG);
     }
 
     public static void debugInfo(Throwable e, String in) {
         if (!isDebug) {
             return;
         }
-        String info = getLogInfo(e, LogThrow.InfoType.DEBUG, in);
+        String info = getLogInfo(e, LogType.InfoType.DEBUG, in);
         System.out.println(info);
-        out(info, LogInfo.InfoType.DEBUG);
+        out(info, LogType.InfoType.DEBUG);
     }
 
     public static void logInfo(Exception e) {
+        logInfo(e, null);
+    }
+
+    public static void logInfo(Throwable e) {
         logInfo(e, null);
     }
 
@@ -71,14 +75,26 @@ public class nLogger {
     }
 
     public static void logInfo(Exception e, String in) {
-        String info = getLogInfo(e, LogInfo.InfoType.LOG, in);
+        String info = getLogInfo(e, LogType.InfoType.LOG, in);
         if (isDebug) {
             System.out.println(info);
         }
-        out(info, LogInfo.InfoType.LOG);
+        out(info, LogType.InfoType.LOG);
+    }
+
+    public static void logInfo(Throwable e, String in) {
+        String info = getLogInfo(e, LogType.InfoType.LOG, in);
+        if (isDebug) {
+            System.out.println(info);
+        }
+        out(info, LogType.InfoType.LOG);
     }
 
     public static void warnInfo(Exception e) {
+        warnInfo(e, null);
+    }
+
+    public static void warnInfo(Throwable e) {
         warnInfo(e, null);
     }
 
@@ -87,20 +103,34 @@ public class nLogger {
     }
 
     public static void warnInfo(Exception e, String in) {
-        System.out.println(getLogInfo(e, LogInfo.InfoType.WARN, in));
+        System.out.println(getLogInfo(e, LogType.InfoType.WARN, in));
+    }
+
+    public static void warnInfo(Throwable e, String in) {
+        System.out.println(getLogInfo(e, LogType.InfoType.WARN, in));
     }
 
     public static void errorInfo(Exception e) {
-        warnInfo(e, null);
+        errorInfo(e, null);
+    }
+
+    public static void errorInfo(Throwable e) {
+        errorInfo(e, null);
     }
 
     public static void errorInfo(String in) {
-        warnInfo(null, in);
+        errorInfo(null, in);
     }
 
     public static void errorInfo(Exception e, String in) {
-        String info = getLogInfo(e, LogInfo.InfoType.ERROR, in);
+        String info = getLogInfo(e, LogType.InfoType.ERROR, in);
         System.out.println(info);
-        out(info, LogInfo.InfoType.ERROR);
+        out(info, LogType.InfoType.ERROR);
+    }
+
+    public static void errorInfo(Throwable e, String in) {
+        String info = getLogInfo(e, LogType.InfoType.ERROR, in);
+        System.out.println(info);
+        out(info, LogType.InfoType.ERROR);
     }
 }
