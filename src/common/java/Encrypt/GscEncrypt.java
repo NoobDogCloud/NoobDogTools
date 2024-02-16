@@ -29,7 +29,7 @@ public class GscEncrypt {
         return "gsc-json&" + _encodeString(json.toString());
     }
 
-    public static String encodeJsonArray(JSONArray json) {
+    public static String encodeJsonArray(JSONArray<?> json) {
         return "gsc-jsonArray&" + _encodeString(json.toString());
     }
 
@@ -50,15 +50,15 @@ public class GscEncrypt {
      */
     public static JSONObject decodeJson(String jsonString) {
         var header = getHeader(jsonString);
-        if (!getType(header).equals("json")) {
+        if (header == null || !getType(header).equals("json")) {
             return null;
         }
         return JSONObject.toJSON(_decodeString(jsonString.substring(header.length() + 1)));
     }
 
-    public static JSONArray decodeJsonArray(String jsonArrayString) {
+    public static JSONArray<?> decodeJsonArray(String jsonArrayString) {
         var header = getHeader(jsonArrayString);
-        if (!getType(header).equals("jsonArray")) {
+        if (header != null && !getType(header).equals("jsonArray")) {
             return null;
         }
         return JSONArray.toJSONArray(_decodeString(jsonArrayString.substring(header.length() + 1)));
@@ -66,7 +66,7 @@ public class GscEncrypt {
 
     public static String decodeString(String str) {
         var header = getHeader(str);
-        if (!getType(header).equals("string")) {
+        if (header == null || !getType(header).equals("string")) {
             return null;
         }
         return _decodeString(str.substring(header.length() + 1));
@@ -77,16 +77,12 @@ public class GscEncrypt {
         if (header == null) {
             return null;
         }
-        switch (getType(header)) {
-            case "json":
-                return decodeJson(str);
-            case "jsonArray":
-                return decodeJsonArray(str);
-            case "string":
-                return decodeString(str);
-            default:
-                return null;
-        }
+        return switch (getType(header)) {
+            case "json" -> decodeJson(str);
+            case "jsonArray" -> decodeJsonArray(str);
+            case "string" -> decodeString(str);
+            default -> null;
+        };
     }
 
     private static String _decodeString(String str) {
@@ -99,6 +95,9 @@ public class GscEncrypt {
     }
 
     public static String getType(String header) {
+        if (header == null) {
+            return null;
+        }
         return header.split("-")[1];
     }
 }

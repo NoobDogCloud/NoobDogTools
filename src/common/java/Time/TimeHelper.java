@@ -1,6 +1,7 @@
 package common.java.Time;
 
 import common.java.String.StringHelper;
+import common.java.nLogger.nLogger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,7 @@ public class TimeHelper {
         try {
             rightNow.setTime(simpleDate.parse(dyear + "/" + dmouth));
         } catch (ParseException e) {
-            e.printStackTrace();
+            nLogger.logInfo(e);
         }
         return rightNow.getActualMaximum(Calendar.DAY_OF_MONTH);
     }

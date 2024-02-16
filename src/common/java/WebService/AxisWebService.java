@@ -49,7 +49,7 @@ public class AxisWebService {
         return rQName;
     }
 
-    public AxisWebService addCall(String fName, JSONArray params) throws ServiceException {
+    public AxisWebService addCall(String fName, JSONArray<?> params) throws ServiceException {
         Call call = (Call) service.createCall();
         call.setTargetEndpointAddress(wsdlUrl);
         call.setOperationName(fName);

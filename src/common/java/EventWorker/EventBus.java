@@ -47,7 +47,7 @@ public class EventBus {
                                 }
                             }
                         } else if (msg instanceof Supplier) {
-                            ((Supplier) msg).get();
+                            ((Supplier<?>) msg).get();
                         } else if (msg instanceof Runnable) {
                             ((Runnable) msg).run();
                         }
@@ -66,11 +66,11 @@ public class EventBus {
         return subscribe.containsKey(eventName);
     }
 
-    public static <T extends Function> int listen(String eventName, T func) {
+    public static <T extends Function<?, ?>> int listen(String eventName, T func) {
         return addListen(eventName, func);
     }
 
-    public static <T extends Supplier> int listen(String eventName, T func) {
+    public static <T extends Supplier<?>> int listen(String eventName, T func) {
         return addListen(eventName, func);
     }
 

@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public class FileHelper<T extends FileHelper<?>> {
     protected static final int MAX_BLOCK_LENGTH = 0xffffffff;
     protected final File file;
-    protected Charset charset;
+    protected final Charset charset;
     // public long readPoint = 0;
     // public long writePoint = 0;
     private FileInputStream inStream;
@@ -179,7 +179,7 @@ public class FileHelper<T extends FileHelper<?>> {
         try {
             Files.copy(oldFile.toPath(), newFile.toPath());
         } catch (IOException e) {
-            e.printStackTrace();
+            nLogger.logInfo(e);
         }
         return oldFile;
     }
@@ -267,7 +267,7 @@ public class FileHelper<T extends FileHelper<?>> {
      */
     public static String fileExtension(String filePath) {
         String eName = filePath.substring(0, filePath.lastIndexOf('.') + 1);
-        return eName.length() > 0 ? eName : "UNKNOWN";
+        return !eName.isEmpty() ? eName : "UNKNOWN";
     }
 
     /**
@@ -479,7 +479,7 @@ public class FileHelper<T extends FileHelper<?>> {
             try {
                 inStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                nLogger.logInfo(e);
             }
             inStream = null;
         }
@@ -502,7 +502,7 @@ public class FileHelper<T extends FileHelper<?>> {
             try {
                 outStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                nLogger.logInfo(e);
             }
             outStream = null;
         }
@@ -555,7 +555,7 @@ public class FileHelper<T extends FileHelper<?>> {
             try {
                 FileInputStream fis = this.getInputStream();
                 FileChannel fc = fis.getChannel();
-                int blockSize = (int) Math.ceil(fc.size() / MAX_BLOCK_LENGTH);
+                int blockSize = (int) Math.ceil((double) fc.size() / MAX_BLOCK_LENGTH);
                 long tCmp, tSize;
                 for (int i = 0; i < blockSize; i++) {
                     tCmp = fc.size() - i * MAX_BLOCK_LENGTH;

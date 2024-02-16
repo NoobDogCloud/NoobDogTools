@@ -8,7 +8,7 @@ public class ConcurrentFinal<V> {
     }
 
     public static <V> ConcurrentFinal<V> build(V v) {
-        return new ConcurrentFinal<V>(v);
+        return new ConcurrentFinal<>(v);
     }
 
     public V set() {

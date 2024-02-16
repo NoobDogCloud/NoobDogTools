@@ -23,7 +23,7 @@ public class ImageHelper {
             // 处理数据
             for (int i = 0; i < b.length; ++i) {
                 if (b[i] < 0) {
-                    b[i] += 256;
+                    b[i] += (byte) 256;
                 }
             }
             OutputStream out = new FileOutputStream(path);
@@ -61,7 +61,7 @@ public class ImageHelper {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                nLogger.logInfo(e);
             }
         }
         // 加密

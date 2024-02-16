@@ -6,12 +6,12 @@ import org.json.gsc.JSONObject;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class LogInfo {
-    private final Exception e;
-    private InfoType type;
+public class LogThrow {
+    private final Throwable e;
+    private LogThrow.InfoType type;
     private String info;
 
-    private LogInfo(Exception e, InfoType type) {
+    private LogThrow(Throwable e, LogThrow.InfoType type) {
         this.e = e;
         this.type = type;
         if (this.e != null) {
@@ -19,29 +19,29 @@ public class LogInfo {
         }
     }
 
-    public static LogInfo build() {
-        return new LogInfo(null, InfoType.LOG);
+    public static LogThrow build() {
+        return new LogThrow(null, LogThrow.InfoType.LOG);
     }
 
-    public static LogInfo build(Exception e) {
-        return new LogInfo(e, InfoType.LOG);
+    public static LogThrow build(Throwable e) {
+        return new LogThrow(e, LogThrow.InfoType.LOG);
     }
 
-    public static LogInfo build(Exception e, InfoType type) {
-        return new LogInfo(e, type);
+    public static LogThrow build(Throwable e, LogThrow.InfoType type) {
+        return new LogThrow(e, type);
     }
 
-    public LogInfo level(InfoType type) {
+    public LogThrow level(LogThrow.InfoType type) {
         this.type = type;
         return this;
     }
 
-    public LogInfo info(String in) {
+    public LogThrow info(String in) {
         this.info = in;
         return this;
     }
 
-    private String stack(Exception e) {
+    private String stack(Throwable e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
@@ -64,7 +64,7 @@ public class LogInfo {
     public JSONObject toJson() {
         JSONObject rs = JSONObject.build("time", TimeHelper.build().nowDatetime())
                 .put("LEVEL", type.toString())
-                .put("ThreadID", Thread.currentThread().threadId())
+                .put("ThreadID", Thread.currentThread().getId())
                 .put("message", this.info);
         if (e != null) {
             rs.put("stack", stack(e));

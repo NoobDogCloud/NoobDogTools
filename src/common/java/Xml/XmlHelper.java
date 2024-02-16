@@ -77,10 +77,11 @@ public class XmlHelper {
 			_item = json.get(key);
 			if (_item instanceof JSONObject) {//内容是JSON
 				contentNode = appendJsonToXml(contentNode, (JSONObject) _item);
-			} else if (_item instanceof JSONArray) {
-				JSONArray ary = (JSONArray) _item;
+			} else if (_item instanceof JSONArray<?> ary) {
 				for (Object _json : ary) {
-					contentNode = appendJsonToXml(contentNode, (JSONObject) _json);
+					if (_json instanceof JSONObject v) {
+						contentNode = appendJsonToXml(contentNode, v);
+					}
 				}
 			} else {
 				contentNode.add(DocumentHelper.createCDATA(json.get(key).toString()));
@@ -105,8 +106,8 @@ public class XmlHelper {
 			key = element.getName();
 			if (tmpRS.containsKey(key)) {
 				tmp = tmpRS.get(key);
-				array = (tmp instanceof JSONArray) ? ((JSONArray) tmp) : new JSONArray();
-				((JSONArray) array).add(element.getData());
+				array = (tmp instanceof JSONArray) ? ((JSONArray<?>) tmp) : new JSONArray<>();
+				((JSONArray<Object>) array).add(element.getData());
 			} else {
 				array = element.getData();
 			}

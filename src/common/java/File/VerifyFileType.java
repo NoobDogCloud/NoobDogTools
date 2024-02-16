@@ -1,5 +1,7 @@
 package common.java.File;
 
+import common.java.nLogger.nLogger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +11,7 @@ import java.util.Map;
 
 public class VerifyFileType {
 
-    public final static Map<String, String> FILE_TYPE_MAP = new HashMap<String, String>();
+    public final static Map<String, String> FILE_TYPE_MAP = new HashMap<>();
     private static FileInputStream is;
 
     static {
@@ -87,11 +89,11 @@ public class VerifyFileType {
      */
     public static String bytesToHexString(byte[] src) {
         StringBuilder stringBuilder = new StringBuilder();
-        if (src == null || src.length <= 0) {
+        if (src == null || src.length == 0) {
             return null;
         }
-        for (int i = 0; i < src.length; i++) {
-            int v = src[i] & 0xFF;
+        for (byte b : src) {
+            int v = b & 0xFF;
             String hv = Integer.toHexString(v);
             if (hv.length() < 2) {
                 stringBuilder.append(0);
@@ -111,7 +113,7 @@ public class VerifyFileType {
         try {
             return getFileType(new FileInputStream(filePath));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            nLogger.logInfo(e);
         }
         return "";
     }
@@ -135,7 +137,7 @@ public class VerifyFileType {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            nLogger.logInfo(e);
         }
         return res;
     }

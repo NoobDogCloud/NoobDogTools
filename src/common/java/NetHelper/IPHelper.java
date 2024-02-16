@@ -56,7 +56,7 @@ public class IPHelper {
 
     public static String localIP() {
         List<String> ips = localIPs();
-        return ips.size() > 0 ? ips.get(0) : "127.0.0.1";
+        return !ips.isEmpty() ? ips.getFirst() : "127.0.0.1";
     }
 
     public static boolean isLocalIP(String ip) {
@@ -65,7 +65,7 @@ public class IPHelper {
         }
 
         List<String> ipList = getIpAddress();
-        if (ipList.size() > 0) {
+        if (!ipList.isEmpty()) {
             int i, l = ipList.size();
             for (i = 0; i < l; i++) {
                 if (ipList.get(i).equals(ip)) {
@@ -156,7 +156,7 @@ public class IPHelper {
             // 2. 168 * 256^2
             // 3. 1 * 256^1
             // 4. 2 * 256^0
-            result += ip * Math.pow(256, power);
+            result += (long) (ip * Math.pow(256, power));
 
         }
 

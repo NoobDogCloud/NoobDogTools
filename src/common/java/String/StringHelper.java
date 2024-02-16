@@ -324,7 +324,7 @@ public class StringHelper {
     }
 
     public static boolean isInvalided(String str) {
-        return str == null || str.trim().length() == 0 || str.trim().equals("null") || str.trim().equals("undefined");
+        return str == null || str.trim().isEmpty() || str.trim().equals("null") || str.trim().equals("undefined");
     }
 
     public static String toString(Object obj) {
@@ -364,7 +364,7 @@ public class StringHelper {
      * @return
      */
     public StringHelper removeLeadingFrom() {
-        str = str.length() > 0 ? str.substring(1) : "";
+        str = !str.isEmpty() ? str.substring(1) : "";
         return this;
     }
 
@@ -375,7 +375,7 @@ public class StringHelper {
      * @return
      */
     public StringHelper removeLeadingFrom(int i) {
-        str = (i > str.length()) ? null : str.length() > 0 ? str.substring(i) : "";
+        str = (i > str.length()) ? null : !str.isEmpty() ? str.substring(i) : "";
         return this;
     }
 
@@ -383,7 +383,7 @@ public class StringHelper {
      * 删除字符串最后1个字符
      */
     public StringHelper removeTrailingFrom() {
-        str = str.length() > 0 ? str.substring(0, str.length() - 1) : "";
+        str = !str.isEmpty() ? str.substring(0, str.length() - 1) : "";
         return this;
     }
 
@@ -393,7 +393,7 @@ public class StringHelper {
      * @return
      */
     public StringHelper removeTrailingFrom(int i) {
-        str = (i < 1) ? str : str.length() > 0 ? str.substring(0, str.length() - i) : str;
+        str = (i < 1) ? str : !str.isEmpty() ? str.substring(0, str.length() - i) : str;
         return this;
     }
 
@@ -401,10 +401,10 @@ public class StringHelper {
      * 删除字符串前后第一个字符
      */
     public StringHelper removeFrom() {
-        if (str.length() > 0) {
+        if (!str.isEmpty()) {
             str = str.substring(1);
         }
-        if (str.length() > 0) {
+        if (!str.isEmpty()) {
             str = str.substring(0, str.length() - 1);
         }
         return this;
@@ -501,7 +501,7 @@ public class StringHelper {
      * @return
      */
     public StringHelper upperCaseFirst() {
-        char chr = str.length() > 0 ? str.charAt(0) : '\0';
+        char chr = !str.isEmpty() ? str.charAt(0) : '\0';
         StringBuilder strBuilder = new StringBuilder(str);
         strBuilder.setCharAt(0, String.valueOf(chr).toUpperCase().charAt(0));
         str = strBuilder.toString();
@@ -539,7 +539,7 @@ public class StringHelper {
      * @return
      */
     public StringHelper trimLeading() {
-        str = str.length() > 0 ? str.substring(1) : "";
+        str = !str.isEmpty() ? str.substring(1) : "";
         return this;
     }
 

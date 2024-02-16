@@ -11,7 +11,7 @@ public class FilePointerEx {
         FilePointer fp = FilePointer.build(offset);
         int beginIdx = fp.idx();
         int beginOffset = fp.point();
-        int blockSize = (int) Math.ceil(length / FileHelper.MAX_BLOCK_LENGTH);
+        int blockSize = (int) Math.ceil((double) length / FileHelper.MAX_BLOCK_LENGTH);
         this.beginIdx = beginIdx;
         pointerArray = new FilePointer[blockSize];
         // 填充第一个

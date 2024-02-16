@@ -46,7 +46,7 @@ public class UrlCode {
     public static String decode(String _in) {//字符串解码
         String rString;
         rString = URLDecoder.decode(_in, StandardCharsets.UTF_8);
-        rString = rString.replaceAll("/\"", "\\\"");
+        rString = rString.replaceAll("/\"", "\"");
         return rString;
     }
 }

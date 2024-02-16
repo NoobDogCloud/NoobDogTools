@@ -17,7 +17,7 @@ public class NumberHelper {
 			} else if (in instanceof Integer) {
 				r = ((Integer) in).longValue();
 			} else if (in instanceof String) {
-				r = Long.valueOf(((String) in).trim());
+				r = Long.parseLong(((String) in).trim());
 			} else if (in instanceof Double) {
 				r = ((Double) in).longValue();
 			} else if (in instanceof Float) {
@@ -29,8 +29,7 @@ public class NumberHelper {
 			} else if (in instanceof BigDecimal) {
 				r = ((BigDecimal) in).longValue();
 			}
-		} catch (Exception e) {
-			r = 0;
+		} catch (Exception ignored) {
 		}
 		return r;
 	}
@@ -46,7 +45,7 @@ public class NumberHelper {
 			} else if (in instanceof Integer) {
 				r = (Integer) in;
 			} else if (in instanceof String) {
-				r = Integer.valueOf(((String) in).trim());
+				r = Integer.parseInt(((String) in).trim());
 			} else if (in instanceof Double) {
 				r = ((Double) in).intValue();
 			} else if (in instanceof Float) {
@@ -58,8 +57,7 @@ public class NumberHelper {
 			} else if (in instanceof BigDecimal) {
 				r = ((BigDecimal) in).intValue();
 			}
-		} catch (Exception e) {
-			r = 0;
+		} catch (Exception ignored) {
 		}
 		return r;
 	}
@@ -75,7 +73,7 @@ public class NumberHelper {
 			} else if (in instanceof Integer) {
 				r = ((Integer) in).floatValue();
 			} else if (in instanceof String) {
-				r = Float.valueOf(((String) in).trim());
+				r = Float.parseFloat(((String) in).trim());
 			} else if (in instanceof Double) {
 				r = ((Double) in).floatValue();
 			} else if (in instanceof Float) {
@@ -104,7 +102,7 @@ public class NumberHelper {
 			} else if (in instanceof Integer) {
 				r = ((Integer) in).doubleValue();
 			} else if (in instanceof String) {
-				r = Double.valueOf(((String) in).trim());
+				r = Double.parseDouble(((String) in).trim());
 			} else if (in instanceof Double) {
 				r = ((Double) in);
 			} else if (in instanceof Float) {
@@ -124,7 +122,7 @@ public class NumberHelper {
 
 	public static boolean isNumeric(Object str) {
 		var v = StringHelper.toString(str);
-		if (v == null || v.length() == 0) {
+		if (v == null || v.isEmpty()) {
 			return false;
 		}
 		for (int i = v.length(); --i >= 0; ) {

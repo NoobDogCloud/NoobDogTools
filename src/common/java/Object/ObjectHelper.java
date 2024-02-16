@@ -19,24 +19,21 @@ public class ObjectHelper {
         if (r == null) {
             try {
                 r = Float.parseFloat(v);
-            } catch (Exception e) {
-                r = null;
+            } catch (Exception ignored) {
             }
         }
         // int
         if (r == null) {
             try {
                 r = Integer.parseInt(v);
-            } catch (Exception e) {
-                r = null;
+            } catch (Exception ignored) {
             }
         }
         // long
         if (r == null) {
             try {
                 r = Long.parseLong(v);
-            } catch (Exception e) {
-                r = null;
+            } catch (Exception ignored) {
             }
         }
         // jsonObject

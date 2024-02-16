@@ -23,8 +23,7 @@ public class ZipFileHelper {
         String savePath = zipFilePath.substring(0, zipFilePath.lastIndexOf(".")) + File.separator; //保存解压文件目录
         new File(savePath).mkdir(); //创建保存目录
         resultPath.add(savePath);
-        try {
-            ZipFile zipFile = new ZipFile(zipFilePath);
+        try (ZipFile zipFile = new ZipFile(zipFilePath)) {
             Enumeration<?> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
@@ -135,9 +134,11 @@ public class ZipFileHelper {
         }
 
         File[] files = dir.listFiles();
-        for (File file : files) {
-            /* 递归 */
-            compress(file, out, basedir + dir.getName() + "/");
+        if (files != null) {
+            for (File file : files) {
+                /* 递归 */
+                compress(file, out, basedir + dir.getName() + "/");
+            }
         }
     }
 

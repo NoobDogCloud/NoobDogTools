@@ -25,6 +25,13 @@ public class nLogger {
                 .toString();
     }
 
+    private static String getLogInfo(Throwable e, LogThrow.InfoType type, String in) {
+        LogThrow infoObj = e == null ? LogThrow.build() : LogThrow.build(e);
+        return infoObj.level(type)
+                .info(in)
+                .toString();
+    }
+
     public static void debugInfo(Exception e) {
         debugInfo(e, null);
     }
@@ -33,11 +40,24 @@ public class nLogger {
         debugInfo(null, in);
     }
 
+    public static void debugInfo(Throwable in) {
+        debugInfo(in, null);
+    }
+
     public static void debugInfo(Exception e, String in) {
         if (!isDebug) {
             return;
         }
         String info = getLogInfo(e, LogInfo.InfoType.DEBUG, in);
+        System.out.println(info);
+        out(info, LogInfo.InfoType.DEBUG);
+    }
+
+    public static void debugInfo(Throwable e, String in) {
+        if (!isDebug) {
+            return;
+        }
+        String info = getLogInfo(e, LogThrow.InfoType.DEBUG, in);
         System.out.println(info);
         out(info, LogInfo.InfoType.DEBUG);
     }
