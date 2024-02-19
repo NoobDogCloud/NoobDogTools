@@ -628,4 +628,18 @@ public class StringHelper {
     public StringTemplate toTemplate() {
         return new StringTemplate(str);
     }
+
+    /**
+     * 字符串压缩
+     */
+    public static String compression(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        // 去掉换行符,制表符,回车符
+        str = str.replaceAll("\t", "").replaceAll("\r", "").replaceAll("\n", "");
+        // 将多个空格替换成一个空格
+        str = str.replaceAll("\\s+", " ");
+        return str;
+    }
 }

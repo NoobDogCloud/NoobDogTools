@@ -16,5 +16,8 @@ public class testStringHelper extends TestCase {
         template1 = "that it !${user}是用户,${pass@word}zero";
         s = StringHelper.build(template1).toTemplate().replace(value).toString();
         assertEquals(s, "that it !tester是用户,123zero");
+        s = StringHelper.compression("This is a \n\t\t\t test \n\t string with \r\r multiple \t\t spaces.      哈哈");
+        System.out.println(s);
+        // assertEquals("This is a test with multiple spaces.      哈哈", );
     }
 }
